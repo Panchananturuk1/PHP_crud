@@ -112,15 +112,10 @@ body {
             <input type="file" name="cv" id="image" />
          </div><br />
 			<div class="row">           
-				<div class="col"><input type="text" class="form-control" name="Full_Name" placeholder="Full  Name" required="required"></div>				
+				<div class="col"><input type="text" class="form-control" name="name" placeholder="  Name" required="required"></div>				
 			</div>     
-            <div><br />
-            <label for="gen">Gender: </label>
-                <label for="male">Male</label>
-                <input type="radio" value="Male" name="gender"> 
-                <label for="Female">Female</label>
-                <input type="radio"  value="Female"  name="gender">
-         </div>   	<br />
+        
+	
         
     	
 
@@ -130,17 +125,12 @@ body {
         </div>
 
         <div class="form-group">
-        <input type="text" class="form-control" name="Address" placeholder="Address.." required="required">	
-        </div>
-
-        <div class="form-group">
-        <input type="number" class="form-control" name="Contact" placeholder="Contact Number.." required="required">	
+        <input type="text" class="form-control" name="phone" placeholder="contact.." required="required">	
         </div>
 
 		<div class="form-group">
-            <input type="password" class="form-control" name="Password" placeholder="Password" required="required">
+        <input type="text" class="form-control" name="city" placeholder="city...." required="required">	
         </div>
-		     
      
 		<div class="form-group">
             <button type="submit" class="btn btn-success btn-lg btn-block" name="submit">Register Now</button>
@@ -155,27 +145,36 @@ body {
 
     if(isset($_POST['submit']))
     {
+		session_start();
 
-   $cv = $_POST['cv'];
-    $Full_Name = $_POST['Full_Name'];
-    $Gender = $_POST['gender'];
-    $Email = $_POST['email'];
-    $Address = $_POST['Address'];
-    $Contact = $_POST['Contact'];
-    $Password = $_POST['Password'];
-
-    $con = mysqli_connect('localhost', 'root', '', 'Registration') or die(mysqli_error($con));
+	$cv = $_FILES["cv"]["name"]; 
+    $tempname = $_FILES["cv"]["tmp_name"];
+	$folder = "cv/".$cv; 
+  
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $city = $_POST['city'];
+    $con = mysqli_connect('localhost', 'root', '', 'user') or die(mysqli_error($con));
 
    
 
     if ($con->connect_error) {
         die("Connection failed: " . $con->connect_error);
         echo  '<script> alert("Connection Failed "); </script>';	
-      } else{
+      } 
 
-        $ins = "INSERT INTO Register(cv,Full_Name,Gender,Email,Address,Contact,Password) VALUES ('$cv','$Full_Name','$Gender','$Email','$Address','$Contact','$Password')";
+        $ins = "INSERT INTO crud(cv,name,email,phone,city) VALUES ('$cv','$name','$email','$phone','$city')";
 
         if ($con->query($ins) === TRUE) {
+
+			if (move_uploaded_file($tempname, $folder))  { 
+				$msg = "cv uploaded successfully"; 
+			}else{ 
+				$msg = "Failed to upload cv"; 
+		  } 
+
+
             echo  '<script> alert(" New record created successfully "); </script>';
         echo "New record created successfully";
       } else {
@@ -186,7 +185,7 @@ body {
       $con->close();
 
 
-      }
+      
 
     }
 ?>
