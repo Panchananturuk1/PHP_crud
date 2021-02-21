@@ -103,98 +103,66 @@ body {
 </head>
 <body>
 <div class="signup-form">
-    <form action="Register.php" method="post" enctype="multipart/form-data">
-		<h2>Register</h2>
-		
-        <div class="form-group">
-        <div>
-            <label for="cv">Upload your cv </label> 
-            <input type="file" name="cv" id="image" />
-         </div><br />
-			<div class="form-group">           
-				<input type="text" class="form-control" name="name" placeholder="  Name" required="required">				
-			</div>     
+    <form action="Admin_Login.php" method="post">
+		<h2>Admin</h2>
 
         <div class="form-group">
-        	<input type="email" class="form-control" name="email" placeholder="Email" required="required">
-            		
-        </div>
-
-        <div class="form-group">
-        <input type="text" class="form-control" name="phone" placeholder="contact.." required="required">	
+        	<input type="email" class="form-control" name="email" placeholder="Email" required="required">        		
         </div>
 
 		<div class="form-group">
-        <input type="text" class="form-control" name="city" placeholder="city...." required="required">	
+            <input type="password" class="form-control" name="Password" placeholder="Password" required="required">
         </div>
-
+		      
 		<div class="form-group">
-        <input type="Password" class="form-control" name="Password" placeholder="Password...." required="required">	
+            <button type="submit" class="btn btn-success btn-lg btn-block" name="submit">Sign in</button>
         </div>
-     
-		<div class="form-group">
-            <button type="submit" class="btn btn-success btn-lg btn-block" name="submit">Register Now</button>
-        </div>
-
-        
     </form>
-	<div class="text-center">Already have an account? <a href="Login.php">Sign in</a></div>
+	<div class="text-center">Dont have an account? Register<a href="Register.php">Register</a></div>
 </div>
+
+
+
+
 
 <?php
 
-    if(isset($_POST['submit']))
+if(isset($_POST['submit']))
+{
+
+$email = $_POST['email'];
+$Password = $_POST['Password'];
+
+$con = mysqli_connect('localhost', 'root', '', 'myadmin') or die(mysqli_error($con));
+
+
+if ($con->connect_error) {
+    die("Connection failed: " . $con->connect_error);
+    echo  '<script> alert("Connection Failed "); </script>';	
+  } 
+
+    $display = "SELECT * from admin WHERE email='$email' AND Password='$Password' ";
+    $result = mysqli_query($con, $display) or die(mysqli_error($con));
+
+        $row = mysqli_fetch_assoc($result);
+
+    if($row['email'] == $email && $row['Password'] == $Password)
     {
-		session_start();
+        session_start();
+        echo  '<script> alert("YOUR CREDENTIAL IS MATCHING "); </script>';	
+        echo "<script> window.location.assign('index.php'); </script>";
+    } else{
 
-	$cv = $_FILES["cv"]["name"]; 
-    $tempname = $_FILES["cv"]["tmp_name"];
-	$folder = "cv/".$cv; 
-  
-    $name = $_POST['name'];
-	
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
-    $city = $_POST['city'];
-	$Password = $_POST['Password'];
-    $con = mysqli_connect('localhost', 'root', '', 'user') or die(mysqli_error($con));
-
-   
-
-    if ($con->connect_error) {
-        die("Connection failed: " . $con->connect_error);
-        echo  '<script> alert("Connection Failed "); </script>';	
-      } 
-
-        $ins = "INSERT INTO crud(cv,name,email,phone,city,Password) VALUES ('$cv','$name','$email','$phone','$city','$Password')";
-
-        if ($con->query($ins) === TRUE) {
-
-			if (move_uploaded_file($tempname, $folder))  { 
-				$msg = "cv uploaded successfully"; 
-			}else{ 
-				$msg = "Failed to upload cv"; 
-		  } 
-
-
-            echo  '<script> alert(" New record created successfully "); </script>';
-        echo "New record created successfully";
-      } else {
-        echo "Error: " . $ins . "<br>" . $con->error;
-          echo  '<script> alert("Insertion Failed "); </script>';	
-      }
-
-      $con->close();
-
-
-      
-
+        echo  '<script> alert("YOUR CREDENTIAL IS NOT MATCHING "); </script>';	
     }
+
+  
+}
+
+
 ?>
 
 
 </body>
 
-
 </html>
-

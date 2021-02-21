@@ -47,6 +47,7 @@ include 'backend/database.php';
                         <th>EMAIL</th>
 						<th>PHONE</th>
                         <th>CITY</th>
+						<th>Password</th>
                         <th>ACTION</th>
                     </tr>
                 </thead>
@@ -70,6 +71,8 @@ include 'backend/database.php';
 					<td><?php echo $row["email"]; ?></td>
 					<td><?php echo $row["phone"]; ?></td>
 					<td><?php echo $row["city"]; ?></td>
+					<td><?php echo $row["Password"]; ?></td>
+
 					<td>
 						<a href="#editEmployeeModal" class="edit" data-toggle="modal">
 							<i class="material-icons update" data-toggle="tooltip" 
@@ -79,6 +82,7 @@ include 'backend/database.php';
 							data-email="<?php echo $row["email"]; ?>"
 							data-phone="<?php echo $row["phone"]; ?>"
 							data-city="<?php echo $row["city"]; ?>"
+							data-password="<?php echo $row["Password"]; ?>"
 							title="Edit">&#xE254;</i>
 						</a>
 						<a href="#deleteEmployeeModal" class="delete" data-id="<?php echo $row["id"]; ?>" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" 

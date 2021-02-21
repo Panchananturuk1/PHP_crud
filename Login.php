@@ -104,7 +104,7 @@ body {
 <body>
 <div class="signup-form">
     <form action="Login.php" method="post">
-		<h2>Login</h2>
+		<h2>Employee Login</h2>
 
         <div class="form-group">
         	<input type="email" class="form-control" name="email" placeholder="Email" required="required">        		
